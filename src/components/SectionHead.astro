@@ -1,0 +1,31 @@
+---
+/**
+ * The top of every homepage section: the heading and an optional lead-in. Everything it shows comes from the section's
+ * content file.
+ */
+interface Props {
+	/** id of the heading, referenced by the section's aria-labelledby. */
+	id: string;
+	title: string;
+	intro?: string;
+}
+
+const { id, title, intro } = Astro.props;
+---
+
+<div class="section-head">
+	<h2 id={id}>{title}</h2>
+	{intro && <p class="section-head__intro">{intro}</p>}
+</div>
+
+<style>
+	.section-head {
+		max-width: var(--measure);
+	}
+
+	.section-head__intro {
+		margin-block-start: var(--space-sm);
+		font-size: var(--text-lg);
+		color: var(--fg-muted);
+	}
+</style>

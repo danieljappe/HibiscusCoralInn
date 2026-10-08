@@ -1,0 +1,105 @@
+---
+/**
+ * Minimal chrome, laid over the hero photograph. One page, so the links are
+ * anchors into it. On the narrowest screens only the two that matter most —
+ * rooms and contact — are shown; everything is still reachable by scrolling.
+ */
+import { SITE } from '../config/site';
+
+const links = [
+	{ href: '#rooms', label: 'Rooms', always: true },
+	{ href: '#getting-here', label: 'Getting here', always: false },
+	{ href: '#contact', label: 'Contact', always: true },
+];
+---
+
+<header class="site-header">
+	<nav class="site-header__inner container" aria-label="Main">
+		<a class="site-header__brand" href="/" aria-current="page">
+			{SITE.name}
+		</a>
+
+		<ul class="site-header__links">
+			{links.map((link) => (
+				<li class:list={{ 'site-header__optional': !link.always }}>
+					<a href={link.href}>{link.label}</a>
+				</li>
+			))}
+		</ul>
+	</nav>
+</header>
+
+<style>
+	.site-header {
+		position: absolute;
+		inset-inline: 0;
+		top: 0;
+		z-index: 2;
+		padding-block: var(--space-xs);
+		color: #fff;
+	}
+
+	.site-header__inner {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-sm);
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.site-header a {
+		display: inline-flex;
+		align-items: center;
+		/* 44px tap target. */
+		min-height: 44px;
+		color: inherit;
+		text-decoration: none;
+		text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
+	}
+
+	/* Over a photograph the ring must hold against anything: white with a dark halo. */
+	.site-header a:focus-visible {
+		outline-color: #fff;
+		box-shadow: 0 0 0 6px rgb(0 0 0 / 0.45);
+	}
+
+	.site-header__brand {
+		font-family: var(--font-display);
+		font-variation-settings: 'SOFT' 100;
+		font-size: var(--text-lg);
+		font-weight: var(--weight-semibold);
+	}
+
+	.site-header__links {
+		display: flex;
+		gap: var(--space-2xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-header__links a {
+		padding-inline: var(--space-2xs);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-semibold);
+	}
+
+	.site-header__links a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.35em;
+	}
+
+	.site-header__optional {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.site-header {
+			padding-block: var(--space-sm);
+		}
+
+		.site-header__optional {
+			display: list-item;
+		}
+	}
+</style>

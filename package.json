@@ -1,0 +1,37 @@
+{
+  "name": "hibiscus-coral-inn",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Hibiscus Coral Inn, Bantayan Island, Cebu",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:preview": "PREVIEW=true astro build",
+    "build:audit": "ALLOW_PLACEHOLDERS=1 PREVIEW_SITE=http://localhost:4322 astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "placeholders": "node scripts/report-placeholders.mjs",
+    "images:placeholders": "node scripts/make-placeholder-images.mjs",
+    "images:og": "node scripts/make-og-images.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,54 @@
+---
+/** Who runs the place and what kind of stay it is. */
+import { render } from 'astro:content';
+import { requirePage } from '../../lib/content';
+import SectionHead from '../SectionHead.astro';
+import Photo from '../primitives/Photo.astro';
+
+const entry = await requirePage('about');
+const { Content } = await render(entry);
+const { title, image, imageAlt } = entry.data;
+---
+
+<section class="section about" id="about" data-tone="linen" aria-labelledby="about-heading">
+	<div class="container about__inner">
+		<div class="about__text">
+			<SectionHead id="about-heading" title={title} />
+			<div class="prose about__body">
+				<Content />
+			</div>
+		</div>
+
+		{image && (
+			<div class="about__media">
+				<Photo src={image} alt={imageAlt ?? ''} sizes="(min-width: 768px) 40vw, 92vw" />
+			</div>
+		)}
+	</div>
+</section>
+
+<style>
+	.about__inner {
+		display: grid;
+		gap: var(--space-xl);
+	}
+
+	.about__body {
+		margin-block-start: var(--space-md);
+	}
+
+	.about__media :global(img) {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+	}
+
+	@media (min-width: 768px) {
+		.about__inner {
+			grid-template-columns: 3fr 2fr;
+			align-items: center;
+			gap: var(--space-2xl);
+		}
+	}
+</style>

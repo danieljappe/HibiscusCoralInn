@@ -1,0 +1,43 @@
+---
+/** The whole site is this one page. */
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
+import Rooms from '../components/sections/Rooms.astro';
+import IslandDivers from '../components/sections/IslandDivers.astro';
+import GettingHere from '../components/sections/GettingHere.astro';
+import Contact from '../components/sections/Contact.astro';
+
+import { SITE } from '../config/site';
+import { lodgingBusinessSchema, websiteSchema } from '../lib/schema';
+
+const title = `${SITE.name} — rooms on ${SITE.place.island}, ${SITE.place.province}`;
+const ogImage = '/og-default.jpg';
+
+const rooms = (await getCollection('rooms', ({ data }) => !data.draft))
+	.sort((a, b) => a.data.order - b.data.order)
+	.map(({ data }) => ({ title: data.title, sleeps: data.sleeps }));
+
+const jsonLd = [
+	websiteSchema(Astro.site),
+	lodgingBusinessSchema({ site: Astro.site, ogImage, rooms }),
+];
+---
+
+<BaseLayout title={title} description={SITE.description} ogImage={ogImage} jsonLd={jsonLd}>
+	<Header slot="header" />
+
+	<Hero />
+	<About />
+	<Rooms />
+	<IslandDivers />
+	<GettingHere />
+	<Contact />
+
+	<Footer slot="footer" />
+</BaseLayout>

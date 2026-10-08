@@ -1,0 +1,44 @@
+---
+/** One card per room type, from src/content/rooms. */
+import { getCollection } from 'astro:content';
+import { requirePage } from '../../lib/content';
+import SectionHead from '../SectionHead.astro';
+import RoomCard from '../RoomCard.astro';
+
+const entry = await requirePage('rooms');
+const rooms = (await getCollection('rooms', ({ data }) => !data.draft)).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<section class="section" id="rooms" data-tone="sand" aria-labelledby="rooms-heading">
+	<div class="container">
+		<SectionHead id="rooms-heading" title={entry.data.title} intro={entry.data.intro} />
+
+		<div class="rooms__grid">
+			{rooms.map(({ data }) => (
+				<RoomCard {...data} />
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.rooms__grid {
+		display: grid;
+		gap: var(--space-md);
+		margin-block-start: var(--space-xl);
+	}
+
+	@media (min-width: 768px) {
+		.rooms__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.rooms__grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

@@ -1,0 +1,95 @@
+---
+/**
+ * The one full-bleed photograph, with the name and the WhatsApp call to
+ * action over it. The hero image is the page's LCP element, so it loads
+ * eagerly at high priority; nothing else above the fold competes with it.
+ */
+import Photo from '../primitives/Photo.astro';
+import WhatsAppLink from '../WhatsAppLink.astro';
+import { SITE } from '../../config/site';
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+	<Photo
+		class="hero__photo"
+		src="hero.jpg"
+		alt="A swimmer in the sea off Bantayan at sunset, the sky orange and gold above the water"
+		sizes="100vw"
+		priority
+	/>
+
+	<div class="hero__content container">
+		<p class="hero__place">
+			{SITE.place.island}, {SITE.place.province}
+		</p>
+		<h1 id="hero-heading" class="hero__title">
+			{SITE.name}
+		</h1>
+		<p class="hero__lede">{SITE.lede}</p>
+		<WhatsAppLink label="Ask about a stay" />
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		display: grid;
+		align-items: end;
+		min-height: min(92svh, 56rem);
+		overflow: hidden;
+		color: #fff;
+		background-color: #5a3324;
+	}
+
+	.hero :global(.hero__photo) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* A scrim strong enough for white text over the brightest part of a sunset. */
+	.hero::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(to top, rgb(30 16 12 / 0.82) 0%, rgb(30 16 12 / 0.35) 45%, transparent 70%),
+			linear-gradient(to bottom, rgb(30 16 12 / 0.45) 0%, transparent 22%);
+	}
+
+	.hero__content {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		padding-block: var(--space-2xl) var(--space-xl);
+	}
+
+	.hero__place {
+		font-size: var(--text-xs);
+		font-weight: var(--weight-semibold);
+		letter-spacing: var(--tracking-caps);
+		text-transform: uppercase;
+	}
+
+	.hero__title {
+		max-width: 12ch;
+		font-weight: var(--weight-regular);
+	}
+
+	.hero__lede {
+		max-width: 28ch;
+		font-size: var(--text-lg);
+		margin-block-end: var(--space-xs);
+	}
+
+	/* Over a photograph the focus ring needs its own contrast. */
+	.hero :global(a:focus-visible) {
+		outline-color: #fff;
+		box-shadow: 0 0 0 6px rgb(0 0 0 / 0.45);
+	}
+</style>

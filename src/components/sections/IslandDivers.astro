@@ -1,0 +1,86 @@
+---
+/**
+ * The one mention of diving: the owners' dive centre is a
+ * separate business with its own site to come, so this links out rather
+ * than selling it here.
+ */
+import { render } from 'astro:content';
+import { requirePage } from '../../lib/content';
+import SectionHead from '../SectionHead.astro';
+import Photo from '../primitives/Photo.astro';
+import { DIVE_CENTRE } from '../../config/site';
+
+const entry = await requirePage('island-divers');
+const { Content } = await render(entry);
+const { title, image, imageAlt, linkLabel } = entry.data;
+---
+
+<section class="section divers" id="diving" data-tone="warm" aria-labelledby="divers-heading">
+	<div class="container divers__inner">
+		{image && (
+			<div class="divers__media">
+				<Photo src={image} alt={imageAlt ?? ''} sizes="(min-width: 768px) 36vw, 92vw" />
+			</div>
+		)}
+
+		<div class="divers__text">
+			<SectionHead id="divers-heading" title={title} />
+			<div class="prose divers__body">
+				<Content />
+			</div>
+			<p class="divers__link">
+				<a href={DIVE_CENTRE.url} rel="noopener" target="_blank">
+					{linkLabel ?? DIVE_CENTRE.name}
+					<span class="visually-hidden">(opens in a new tab)</span>
+				</a>
+				<span class="divers__rating">{DIVE_CENTRE.rating}</span>
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.divers__inner {
+		display: grid;
+		gap: var(--space-lg);
+		align-items: center;
+	}
+
+	.divers__media :global(img) {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+	}
+
+	.divers__body {
+		margin-block-start: var(--space-md);
+	}
+
+	.divers__link {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-sm);
+		align-items: center;
+		margin-block-start: var(--space-md);
+	}
+
+	.divers__link a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		font-weight: var(--weight-semibold);
+	}
+
+	.divers__rating {
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+	}
+
+	@media (min-width: 768px) {
+		.divers__inner {
+			grid-template-columns: 2fr 3fr;
+			gap: var(--space-2xl);
+		}
+	}
+</style>

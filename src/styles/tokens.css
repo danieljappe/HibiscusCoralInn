@@ -1,0 +1,152 @@
+/*
+ * Design tokens.
+ *
+ * Each section carries a `data-tone` choosing its background: four warm light
+ * surfaces and one dark plum for the contact section and footer. Components
+ * only ever use the semantic tokens (--bg, --fg, --cta-bg …), so a section
+ * changes its whole palette with one attribute.
+ *
+ * Colours come from the logo: hibiscus red for the call to action, the warm
+ * yellow of its lettering as the accent. Every pairing in use is verified by
+ * `npm run check:contrast` — keep that script in step with this file.
+ */
+
+:root {
+	/* ---- Palette ---------------------------------------------------------- */
+	--ink: #2a1e19;
+	--ink-soft: #5c4a40;
+	--sea: #1b5873;
+	--hibiscus: #b3302a;
+	--hibiscus-deep: #962520;
+	--sun: #e9a23b;
+	--sun-pale: #f5c46a;
+
+	--linen: #fbf6ee;
+	--linen-raised: #fffdf9;
+	--sand: #f5ebda;
+	--sand-raised: #fffbf4;
+	--warm: #efddc4;
+	--warm-raised: #fbf3e7;
+	--ochre: #e8c9a4;
+	--ochre-raised: #f6e6d0;
+
+	--plum: #2c2134;
+	--plum-raised: #3a2c43;
+	--plum-fg: #f8eee3;
+	--plum-fg-soft: #d4c3cf;
+
+	/* ---- Type ------------------------------------------------------------- */
+	--font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+	--font-body:
+		'Figtree Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+
+	/* Fluid scale, 360px → 1200px. Body never drops below 17px. */
+	--text-xs: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+	--text-sm: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem);
+	--text-base: clamp(1.0625rem, 1.03rem + 0.15vw, 1.1875rem);
+	--text-lg: clamp(1.1875rem, 1.13rem + 0.3vw, 1.375rem);
+	--text-xl: clamp(1.375rem, 1.27rem + 0.5vw, 1.75rem);
+	--text-2xl: clamp(1.75rem, 1.55rem + 0.9vw, 2.375rem);
+	--text-3xl: clamp(2.125rem, 1.8rem + 1.5vw, 3.25rem);
+	--text-4xl: clamp(2.75rem, 2.1rem + 3vw, 5.25rem);
+
+	--leading-tight: 1.05;
+	--leading-snug: 1.25;
+	--leading-normal: 1.55;
+	--leading-loose: 1.7;
+
+	--tracking-display: -0.02em;
+	--tracking-caps: 0.08em;
+
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+	--weight-bold: 700;
+
+	/* ---- Space ------------------------------------------------------------ */
+	--space-3xs: 0.25rem;
+	--space-2xs: 0.5rem;
+	--space-xs: 0.75rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2rem;
+	--space-xl: 3rem;
+	--space-2xl: 4.5rem;
+	--space-section: clamp(4rem, 3rem + 5vw, 7.5rem);
+
+	--gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+	--container: 72rem;
+	--container-narrow: 46rem;
+	--measure: 36rem;
+
+	--radius-sm: 4px;
+	--radius-md: 10px;
+	--radius-lg: 18px;
+
+	/* ---- Motion ----------------------------------------------------------- */
+	--duration-fast: 120ms;
+	--duration-base: 200ms;
+	--ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+	/* Default tone, overridden per section. */
+	--bg: var(--linen);
+	--bg-raised: var(--linen-raised);
+	--fg: var(--ink);
+	--fg-muted: var(--ink-soft);
+	--link: var(--sea);
+	--link-hover: var(--ink);
+	--rule: color-mix(in srgb, var(--ink) 18%, transparent);
+	--cta-bg: var(--hibiscus);
+	--cta-bg-hover: var(--hibiscus-deep);
+	--cta-fg: #fff;
+	--cta-ghost-fg: var(--ink);
+	--cta-ghost-border: var(--ink);
+	--focus-ring: var(--ink);
+}
+
+/* ---- Tones -------------------------------------------------------------- */
+
+[data-tone='linen'] {
+	--bg: var(--linen);
+	--bg-raised: var(--linen-raised);
+}
+
+[data-tone='sand'] {
+	--bg: var(--sand);
+	--bg-raised: var(--sand-raised);
+}
+
+[data-tone='warm'] {
+	--bg: var(--warm);
+	--bg-raised: var(--warm-raised);
+}
+
+[data-tone='ochre'] {
+	--bg: var(--ochre);
+	--bg-raised: var(--ochre-raised);
+}
+
+/*
+ * Plum: the one dark tone. The call to action flips to a sun-yellow fill with
+ * ink text — hibiscus red on plum reads as a dark smudge.
+ */
+[data-tone='plum'] {
+	--bg: var(--plum);
+	--bg-raised: var(--plum-raised);
+	--fg: var(--plum-fg);
+	--fg-muted: var(--plum-fg-soft);
+	--link: var(--sun-pale);
+	--link-hover: var(--plum-fg);
+	--rule: color-mix(in srgb, var(--plum-fg) 22%, transparent);
+	--cta-bg: var(--sun-pale);
+	--cta-bg-hover: var(--sun);
+	--cta-fg: var(--plum);
+	--cta-ghost-fg: var(--plum-fg);
+	--cta-ghost-border: var(--plum-fg);
+	--focus-ring: var(--sun-pale);
+}
+
+[data-tone] {
+	background-color: var(--bg);
+	color: var(--fg);
+}

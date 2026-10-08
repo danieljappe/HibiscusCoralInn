@@ -1,0 +1,139 @@
+---
+/**
+ * Bantayan is awkward to reach, and this is otherwise the most common
+ * question. The route is one direct bus that boards the ferry.
+ *
+ * Durations, fares and timetables are placeholders until the owner confirms
+ * them. None of it is invented here.
+ */
+import { render } from 'astro:content';
+import { requirePage } from '../../lib/content';
+import SectionHead from '../SectionHead.astro';
+import Placeholder from '../primitives/Placeholder.astro';
+
+const entry = await requirePage('getting-here');
+const { Content } = await render(entry);
+const { title, intro } = entry.data;
+
+const legs = entry.data.legs ?? [];
+const schedules = entry.data.schedules ?? [];
+---
+
+<section class="section" id="getting-here" data-tone="ochre" aria-labelledby="journey-heading">
+	<div class="container">
+		<SectionHead id="journey-heading" title={title} intro={intro} />
+
+		{legs.map((leg) => (
+			<div class="route">
+				<p class="route__places">
+					<span>{leg.from}</span>
+					<span class="route__arrow" aria-hidden="true">
+						&rarr;
+					</span>
+					<span class="visually-hidden">to</span>
+					<span>{leg.to}</span>
+				</p>
+				<p class="route__mode">{leg.mode}</p>
+
+				<dl class="route__stats">
+					<div>
+						<dt>Journey time</dt>
+						<dd>
+							<Placeholder value={leg.duration} figure />
+						</dd>
+					</div>
+					<div>
+						<dt>Fare</dt>
+						<dd>
+							<Placeholder value={leg.cost} figure />
+						</dd>
+					</div>
+					{schedules.map((schedule) => (
+						<div>
+							<dt>{schedule.label}</dt>
+							<dd>
+								<Placeholder value={schedule.value} figure />
+							</dd>
+						</div>
+					))}
+				</dl>
+
+				{leg.note && <p class="route__note">{leg.note}</p>}
+			</div>
+		))}
+
+		<div class="prose journey__body">
+			<Content />
+		</div>
+	</div>
+</section>
+
+<style>
+	.route {
+		max-width: 56rem;
+		margin-block-start: var(--space-xl);
+		padding: var(--space-md);
+		background-color: var(--bg-raised);
+		border-radius: var(--radius-lg);
+	}
+
+	.route__places {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-sm);
+		align-items: baseline;
+		font-family: var(--font-display);
+		font-variation-settings: 'SOFT' 100;
+		font-size: var(--text-xl);
+		line-height: var(--leading-snug);
+	}
+
+	.route__arrow {
+		color: var(--fg-muted);
+	}
+
+	.route__mode {
+		margin-block-start: var(--space-3xs);
+		font-size: var(--text-xs);
+		font-weight: var(--weight-semibold);
+		letter-spacing: var(--tracking-caps);
+		text-transform: uppercase;
+		color: var(--fg-muted);
+	}
+
+	.route__stats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-md) var(--space-xl);
+		margin-block-start: var(--space-md);
+		padding-block-start: var(--space-md);
+		border-block-start: 1px solid var(--rule);
+	}
+
+	.route__stats dt {
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+	}
+
+	.route__stats dd {
+		margin: 0;
+		margin-block-start: var(--space-3xs);
+		font-size: var(--text-lg);
+	}
+
+	.route__note {
+		margin-block-start: var(--space-md);
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+	}
+
+	.journey__body {
+		margin-block-start: var(--space-lg);
+	}
+
+	@media (min-width: 768px) {
+		.route {
+			padding: var(--space-lg);
+		}
+	}
+</style>
